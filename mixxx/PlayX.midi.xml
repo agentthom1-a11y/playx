@@ -1,5 +1,96 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <MixxxMIDIPreset schemaVersion="1" mixxxVersion="2.4+">
-<info><name>PlayX Virtual MIDI</name><author>PlayX</author><description>Crossfader control</description></info>
-<controller id="PlayX"><controls><control><group>[Master]</group><key>crossfader</key><status>0xB0</status><midino>0x10</midino><options><normal/></options></control></controls></controller>
+  <info>
+    <name>PlayX Agent MIDI</name>
+    <author>PlayX</author>
+    <description>Agentic DJ crossfader, selected-track loader and beat feedback</description>
+  </info>
+  <controller id="PlayX">
+    <scriptfiles>
+      <file filename="PlayX-scripts.js" functionprefix="PlayX" />
+    </scriptfiles>
+    <controls>
+      <control>
+        <group>[Master]</group>
+        <key>crossfader</key>
+        <status>0xB0</status>
+        <midino>0x10</midino>
+        <options>
+          <normal />
+        </options>
+      </control>
+      <control>
+        <group>[Master]</group>
+        <key>PlayX.action</key>
+        <status>0x90</status>
+        <midino>0x14</midino>
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <control>
+        <group>[Master]</group>
+        <key>PlayX.action</key>
+        <status>0x90</status>
+        <midino>0x15</midino>
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <control>
+        <group>[Master]</group>
+        <key>PlayX.action</key>
+        <status>0x90</status>
+        <midino>0x16</midino>
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <control>
+        <group>[Master]</group>
+        <key>PlayX.action</key>
+        <status>0x90</status>
+        <midino>0x17</midino>
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <control>
+        <group>[Master]</group>
+        <key>PlayX.action</key>
+        <status>0x90</status>
+        <midino>0x18</midino>
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <control>
+        <group>[Master]</group>
+        <key>PlayX.action</key>
+        <status>0x90</status>
+        <midino>0x19</midino>
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <control>
+        <group>[Master]</group>
+        <key>PlayX.action</key>
+        <status>0x90</status>
+        <midino>0x1D</midino>
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <control>
+        <group>[Master]</group>
+        <key>PlayX.action</key>
+        <status>0x90</status>
+        <midino>0x1E</midino>
+        <options>
+          <script-binding />
+        </options>
+      </control>
+    </controls>
+  </controller>
 </MixxxMIDIPreset>

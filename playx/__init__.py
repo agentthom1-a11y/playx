@@ -1,2 +1,2 @@
-"""PlayX local-first DJ agent."""
-__version__ = "0.1.0"
+"""PlayX: local-first agentic DJ mixing."""
+__version__ = '0.2.0'
