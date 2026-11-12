@@ -1,5 +1,7 @@
 from __future__ import annotations
 import json
+import os
+from tempfile import NamedTemporaryFile
 from dataclasses import asdict, dataclass
 from pathlib import Path
 import numpy as np
@@ -30,6 +32,13 @@ def analyze(path: str) -> Track:
     p = Path(path).expanduser().resolve()
     if not p.is_file():
         raise FileNotFoundError(p)
+    # Reject oversized/degenerated inputs before loading them into RAM.
+    import soundfile as sf
+    info = sf.info(str(p))
+    if info.duration > 12*60:
+        raise ValueError('Audio over 12 minutes is not supported by this beta renderer')
+    if info.duration < 2:
+        raise ValueError('Audio must be at least two seconds')
     y, sr = librosa.load(str(p), sr=22050, mono=True)
     if y.size < sr * 2:
         raise ValueError('Audio must be at least two seconds')
@@ -87,6 +96,17 @@ def load_plan(path):
 def render(a_path: str, b_path: str, p: Plan, out: str) -> dict:
     import soundfile as sf
     from scipy.signal import butter, sosfilt
+    if p.style not in ('smooth','bass_swap','filter_sweep','echo_out','drop_swap'):
+        raise ValueError('Unsupported transition style in plan')
+    if not np.isfinite([p.start_a,p.start_b,p.duration,p.tempo_ratio]).all():
+        raise ValueError('Non-finite number in transition plan')
+    if p.duration <= 0 or p.start_a < 0 or p.start_b < 0:
+        raise ValueError('Negative/empty timing in transition plan')
+    target = Path(out).expanduser().resolve()
+    if target.suffix.lower() != '.wav':
+        raise ValueError('Render output must use .wav extension')
+    if target.exists():
+        raise FileExistsError(f'Output already exists: {target}. Pick a new name.')
     sr=44100
     def read(path):
         import librosa
@@ -112,7 +132,7 @@ def render(a_path: str, b_path: str, p: Plan, out: str) -> dict:
     t=np.linspace(0,1,n,endpoint=True)
     # Equal-power envelopes; some styles use more abrupt curves.
     x=np.sin(np.pi*t/2)**2
-    if p.style == 'drop_swap': x=(t>=.5).astype(float)
+    if p.style == 'drop_swap': x=np.clip((t-.495)/.01,0,1)  # 10ms+ safety ramp
     if p.style == 'echo_out': x=np.clip((t-.65)/.35,0,1)
     if p.style == 'bass_swap': x=np.clip((t-.25)/.5,0,1)
     if p.style == 'filter_sweep': x=t*t*(3-2*t)
@@ -141,13 +161,23 @@ def render(a_path: str, b_path: str, p: Plan, out: str) -> dict:
     peak=float(np.max(np.abs(result)))
     gain=min(1.0,0.97/peak) if peak else 1.0
     result=(result*gain).T.astype('float32')
-    Path(out).parent.mkdir(parents=True,exist_ok=True)
-    sf.write(out,result,sr,subtype='PCM_24')
-    from .quality import assess
-    report=assess(str(Path(out).resolve()), seam_seconds=[ia/sr,(ia+n)/sr])
-    report_path=Path(str(out)+'.quality.json')
-    report_path.write_text(json.dumps(report,indent=2),encoding='utf-8')
-    return {'output':str(Path(out).resolve()),'duration':round(len(result)/sr,2),
+    target.parent.mkdir(parents=True,exist_ok=True)
+    tmp = None
+    try:
+        with NamedTemporaryFile(prefix='.playx-',suffix='.wav',dir=target.parent,delete=False) as f:
+            tmp = Path(f.name)
+        sf.write(str(tmp),result,sr,subtype='PCM_24')
+        from .quality import assess
+        report=assess(str(tmp), seam_seconds=[ia/sr,(ia+n)/sr])
+        report_path=Path(str(target)+'.quality.json')
+        # Both artifacts only become visible after render and QA complete.
+        _temp_report = report_path.with_name(report_path.name+'.tmp')
+        _temp_report.write_text(json.dumps(report,indent=2),encoding='utf-8')
+        os.replace(tmp,target)
+        os.replace(_temp_report,report_path)
+    finally:
+        if tmp is not None and tmp.exists():tmp.unlink()
+    return {'output':str(target),'duration':round(len(result)/sr,2),
             'sample_rate':sr,'peak_before_gain':round(peak,4),'gain':round(gain,4),
             'tempo_synced':bool(p.tempo_sync and abs(p.tempo_ratio-1)>1e-4),
             'quality_report':str(report_path.resolve()),'quality':report,

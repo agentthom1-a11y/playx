@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0c0d10"><title>PlayX Studio — DJ transitions, directed by you</title>
+<style>
+:root {color-scheme:dark;--bg:#0a0b0e;--surface:#15171c;--panel:#1c1e24;--border:#32353d;--text:#f4f3ef;--muted:#a7a7ac;--gold:#eac18b;--cyan:#8adbe8;--green:#a2dcb4;font:15px/1.6 system-ui,-apple-system,'Segoe UI',sans-serif}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 65% -20%,#302820 0%,transparent 40%),var(--bg);color:var(--text)}
+a{color:var(--gold)}.container{width:min(1160px,calc(100% - 40px));margin:auto}nav{display:flex;align-items:center;justify-content:space-between;height:78px;border-bottom:1px solid #ffffff15}.brand{font-weight:850;font-size:23px;letter-spacing:-1.1px}.brand em{color:var(--gold);font-style:normal}.topnote,.tiny{font-size:12px;color:var(--muted);letter-spacing:.03em}.pill{border:1px solid #5c5244;color:var(--gold);border-radius:100px;padding:5px 12px;font-size:11px;letter-spacing:.12em}
+.hero{display:grid;grid-template-columns:1fr 270px;gap:40px;align-items:end;padding:80px 0 42px}.eyebrow{color:var(--gold);font-size:12px;letter-spacing:.2em;font-weight:700}.hero h1{font-size:clamp(44px,6.4vw,84px);letter-spacing:-.065em;line-height:1.04;margin:16px 0 21px;max-width:850px;font-weight:720}.hero h1 span{color:var(--gold)}.hero p{max-width:670px;color:#b4b2b3;font-size:17px;margin:0}.rightnote{color:#8d8f94;font-size:13px;border-left:1px solid #5c5144;padding-left:20px;margin-bottom:10px}
+.sectionhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:22px 0 15px}.sectionhead h2{font-size:20px;letter-spacing:-.03em;margin:0}.sectionhead span{font-size:12px;color:#96989f}.decks{display:grid;grid-template-columns:1fr 1fr;gap:16px}.deck{min-width:0;border:1px solid var(--border);border-radius:22px;background:linear-gradient(150deg,#1c1e24,#131418);overflow:hidden;position:relative}.deckhead{display:flex;justify-content:space-between;align-items:center;padding:17px 20px;border-bottom:1px solid #ffffff0c}.deckhead b{font-size:13px;letter-spacing:.11em}.deckhead span{color:var(--muted);font-size:11px}.deck .accent{color:var(--cyan)}.deck:last-child .accent{color:var(--gold)}.drop{padding:34px 22px 24px;min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;transition:background .2s;outline-offset:-6px}.drop:hover,.drop.drag{background:#ffffff08}.drop .symbol{border:1px solid #494a52;border-radius:16px;padding:15px;margin-bottom:12px;font-size:22px;color:var(--muted);line-height:1}.drop strong{font-weight:700;font-size:15px}.drop small{color:#96979d;margin-top:6px}.drop input{display:none}.wave{display:block;width:100%;height:74px;margin:11px 0 2px}.meta{color:#9d9fa6;display:flex;justify-content:space-between;padding:14px 20px;border-top:1px solid #ffffff12;font-size:12px;gap:20px}.filename{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;max-width:80%}
+.controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:15px;background:var(--surface);padding:24px;border:1px solid var(--border);border-radius:22px}.field label{display:block;color:#a5a6ab;font-weight:650;letter-spacing:.12em;font-size:10px;margin-bottom:10px}.field select,.field input{width:100%;background:#0e1014;color:var(--text);border:1px solid #44464b;border-radius:10px;padding:12px;min-height:44px;font:inherit;font-size:14px;accent-color:var(--gold)}.field input[type=range]{padding:4px;height:44px}.field .hint{display:block;color:#8e919a;font-size:11px;margin-top:6px}.switchrow{display:flex;gap:12px;align-items:center}.switchrow input{width:20px;height:20px;min-height:0}.switchrow span{font-size:13px}
+.action{margin:19px 0 0;display:flex;gap:16px;align-items:center}.mainbutton{min-width:270px;display:flex;align-items:center;justify-content:center;gap:11px;background:var(--gold);border:none;border-radius:12px;color:#17120b;font-weight:790;font-size:15px;padding:16px 28px;cursor:pointer;transition:filter .2s}.mainbutton:hover{filter:brightness(1.1)}.mainbutton:disabled{opacity:.5;cursor:not-allowed}.action small{color:#999aa0;max-width:340px}.result{margin:35px 0 85px;background:#15171c;border:1px solid #343840;border-radius:20px;padding:24px;min-height:100px}.result header{display:flex;align-items:center;justify-content:space-between;gap:8px}.result h2{font-size:18px;margin:0}.state{font-size:12px;color:#aaa}.line{height:3px;background:#333842;border-radius:10px;overflow:hidden;margin:18px 0}.line .fill{height:100%;background:linear-gradient(90deg,#a67d4c,var(--gold));width:0;transition:width .3s}.result p{color:#aaa;margin:10px 0 0}.success{color:var(--green)}.error{color:#fb9999}.downloads{margin-top:15px;display:flex;gap:12px;flex-wrap:wrap}.downloads a{display:inline-flex;align-items:center;padding:10px 16px;border:1px solid #726149;border-radius:9px;text-decoration:none}.downloads audio{display:block;width:100%;margin:16px 0}footer{padding:24px 0 42px;border-top:1px solid #ffffff17;color:#96979d;font-size:12px}footer strong{color:#ccc}
+@media(max-width:800px){.hero{grid-template-columns:1fr;padding:44px 0 28px}.rightnote{display:none}.controls{grid-template-columns:repeat(2,1fr)}.decks{grid-template-columns:1fr}.topnote{display:none}}@media(max-width:520px){.container{width:calc(100% - 24px)}.controls{gap:14px;padding:17px}.hero h1{font-size:45px}.action{flex-direction:column;align-items:stretch}.mainbutton{width:100%;min-width:0}.result{margin-bottom:35px}}
+</style>
+</head>
+<body><div class="container">
+<nav><div class="brand">PLAY<em>X</em><span class="topnote"> &nbsp; STUDIO</span></div><span class="pill">LOCAL-FIRST · BETA 0.3</span></nav>
+<div class="hero"><div><div class="eyebrow">CREATIVE DJ INTELLIGENCE / DESKTOP</div><h1>Two tracks.<br><span>One perfect moment.</span></h1><p>Drop your music. Shape the energy. PlayX finds a beat-aware transition, renders your mix, and checks the output—without sending your audio to a cloud.</p></div><div class="rightnote">Built for DJs, editors & creators.<br>Music remains on this computer.<br>Prototype engine; listen before publishing.</div></div>
+<section><div class="sectionhead"><h2>01 / Choose your sound</h2><span>WAV · FLAC · MP3 · OGG · AIFF · ≤ 250 MB each</span></div>
+<div class="decks">
+<div class="deck" id="deck-a"><div class="deckhead"><b class="accent">DECK 01 / OUTGOING</b><span>SONG A</span></div><label class="drop" for="file-a" tabindex="0" role="button" aria-label="Choose outgoing audio file"><input type="file" id="file-a" accept=".wav,.flac,.mp3,.ogg,.aif,.aiff,audio/*"><span class="symbol">↥</span><strong class="title">Drop file or browse</strong><small class="subtitle">First track · original intro preserved</small><canvas class="wave" id="wave-a" aria-label="Outgoing track waveform"></canvas></label><div class="meta"><span class="filename" id="name-a">No audio selected</span><span id="duration-a">—</span></div></div>
+<div class="deck" id="deck-b"><div class="deckhead"><b class="accent">DECK 02 / INCOMING</b><span>SONG B</span></div><label class="drop" for="file-b" tabindex="0" role="button" aria-label="Choose incoming audio file"><input type="file" id="file-b" accept=".wav,.flac,.mp3,.ogg,.aif,.aiff,audio/*"><span class="symbol">↥</span><strong class="title">Drop file or browse</strong><small class="subtitle">Second track · original ending preserved</small><canvas class="wave" id="wave-b" aria-label="Incoming track waveform"></canvas></label><div class="meta"><span class="filename" id="name-b">No audio selected</span><span id="duration-b">—</span></div></div>
+</div></section>
+<section><div class="sectionhead"><h2>02 / Direct the transition</h2><span>AI-style decisions · deterministic audio engine</span></div>
+<div class="controls">
+<div class="field"><label for="style">TRANSITION STYLE</label><select id="style"><option value="auto">Auto / Intelligent</option><option value="smooth">Smooth blend</option><option value="bass_swap">Bass swap</option><option value="filter_sweep">Filter sweep</option><option value="echo_out">Echo out</option><option value="drop_swap">Drop swap</option></select><small class="hint">Select a recipe or let PlayX choose.</small></div>
+<div class="field"><label for="energy">ENERGY / <span id="energy-text">70%</span></label><input type="range" id="energy" min="0" max="100" step="5" value="70"><small class="hint">Calm → energetic</small></div>
+<div class="field"><label for="bars">TRANSITION LENGTH</label><select id="bars"><option value="4">4 bars</option><option value="8" selected>8 bars</option><option value="16">16 bars</option><option value="32">32 bars</option></select><small class="hint">Assumes a 4/4 beat grid</small></div>
+<div class="field"><label>TEMPO MATCH</label><label class="switchrow"><input type="checkbox" checked id="tempo-sync"><span>Preserve pitch</span></label><small class="hint">Slower rendering · experimental stretching</small></div>
+</div>
+<div class="action"><button class="mainbutton" id="render" type="button" disabled>✦ &nbsp; Generate my mix</button><small>Audio analysis can take minutes on long songs. You can leave this tab open while PlayX renders.</small></div></section>
+<section class="result" id="result"><header><h2>03 / Your output</h2><span class="state" id="state">READY FOR AUDIO</span></header><div class="line"><div class="fill" id="fill"></div></div><p id="message" role="status" aria-live="polite">Choose two tracks to unlock the mix engine.</p><div class="downloads" id="downloads" hidden></div></section>
+<footer><strong>PLAYX LAB</strong> · Privacy-first by design. Local processing; no account required. © 2026 · Only mix or share recordings you have the rights to use. Not affiliated with Mixxx or Pioneer DJ.</footer>
+</div>
+<script>
+'use strict';
+const files={a:null,b:null};const get=id=>document.getElementById(id);let busy=false;
+const paint=(deck,values)=>{const c=get('wave-'+deck);const ctx=c.getContext('2d');c.width=c.clientWidth*devicePixelRatio;c.height=74*devicePixelRatio;ctx.clearRect(0,0,c.width,c.height);const mid=c.height/2;ctx.fillStyle=deck==='a'?'#8adbe8':'#eac18b';const count=values.length;const width=c.width/Math.max(1,count);values.forEach((v,i)=>{let h=Math.max(2,v*(c.height*.8));ctx.globalAlpha=.3+.7*v;ctx.fillRect(i*width,mid-h/2,Math.max(1,width*.68),h)});ctx.globalAlpha=1};
+const progress=(stage,text,pct)=>{get('state').textContent=stage;get('message').textContent=text;get('fill').style.width=pct+'%'};
+const refreshButton=()=>{get('render').disabled=!files.a||!files.b||busy};
+async function choose(deck,file){
+ if(!file)return;if(file.size>250*1024*1024){progress('INVALID FILE','Maximum audio file size is 250 MiB.',0);return}
+ if(busy)return;busy=true;refreshButton();progress('IMPORTING','Importing '+file.name+'…',8);get('downloads').hidden=true;
+ try{let fd=new FormData();fd.append('file',file);const r=await fetch('/api/uploads',{method:'POST',body:fd});const data=await r.json();if(!r.ok)throw Error(data.detail||'Upload failed');
+ const old=files[deck];files[deck]=data;get('name-'+deck).textContent=data.name;get('duration-'+deck).textContent=Math.round(data.duration_seconds)+'s';paint(deck,data.waveform);get('deck-'+deck).querySelector('.title').textContent='Ready to mix';
+ if(old)fetch('/api/uploads/'+old.id,{method:'DELETE'}).catch(()=>{});progress('READY','Audio imported. Pick a transition and render.',0);
+ }catch(e){progress('ERROR',String(e.message||e),0)}finally{busy=false;refreshButton()}
+}
+for(const deck of ['a','b']){
+ const input=get('file-'+deck),drop=get('deck-'+deck).querySelector('.drop');
+ input.addEventListener('change',e=>{choose(deck,e.target.files[0]);e.target.value=''});
+ for(const type of ['dragenter','dragover'])drop.addEventListener(type,e=>{e.preventDefault();drop.classList.add('drag')});
+ for(const type of ['dragleave','drop'])drop.addEventListener(type,e=>{e.preventDefault();drop.classList.remove('drag')});
+ drop.addEventListener('drop',e=>choose(deck,e.dataTransfer.files[0]));drop.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();input.click()}});
+}
+get('energy').addEventListener('input',e=>get('energy-text').textContent=e.target.value+'%');
+const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+get('render').addEventListener('click',async()=>{
+ if(busy||!files.a||!files.b)return;busy=true;refreshButton();get('downloads').hidden=true;progress('QUEUED','Submitting render…',5);
+ try{
+ const params={a:files.a.id,b:files.b.id,style:get('style').value,bars:Number(get('bars').value),energy:Number(get('energy').value)/100,tempo_sync:get('tempo-sync').checked};
+ const created=await fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(params)});let job=await created.json();if(!created.ok)throw Error(job.detail||'Cannot start render');
+ let delay=650;
+ for(;;){await sleep(delay);const r=await fetch('/api/jobs/'+job.id);job=await r.json();if(!r.ok)throw Error(job.detail||'Job lost');if(job.state==='failed')throw Error(job.error||'Render failed');const stages={'Queued':8,'Analyzing deck A':20,'Analyzing deck B':34,'Planning transition':50,'Rendering & checking audio':76,'Complete':100};progress(job.state.toUpperCase(),job.stage,stages[job.stage]||50);if(job.state==='done')break;delay=Math.min(2000,delay+100)}
+ const result=job.result;progress('COMPLETE','Mix ready · '+result.duration+'s · '+result.plan.style+' · peak '+result.quality.peak_dbfs+' dBFS'+(result.quality.warnings.length?' · Review QA warnings.':''),100);
+ const links=get('downloads');links.replaceChildren();const audio=document.createElement('audio');audio.controls=true;audio.src=result.audio_url;audio.preload='none';links.append(audio);
+ for(const [label,url] of [['↓ Download 24-bit WAV',result.audio_url],['↓ Quality report JSON',result.quality_url]]){const a=document.createElement('a');a.textContent=label;a.href=url;links.append(a)}links.hidden=false;
+ }catch(e){progress('ERROR',String(e.message||e),0)}finally{busy=false;refreshButton()}
+});
+</script>
+</body>
+</html>

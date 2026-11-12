@@ -1,0 +1,40 @@
+name: Windows portable beta package
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+permissions:
+  contents: read
+jobs:
+  portable:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install runtime and builder
+        run: python -m pip install -e '.[full]' pyinstaller
+      - name: Verify unit tests
+        run: |
+          python -m pip install pytest httpx
+          python -m pytest -q
+      - name: Build unsigned portable executable
+        run: >-
+          python -m PyInstaller --noconfirm --clean --onedir --console --name PlayX
+          --collect-all librosa --collect-all scipy --collect-all numba
+          --collect-all soundfile --collect-data playx playx_launcher.py
+      - name: Archive Windows package
+        shell: pwsh
+        run: |
+          Compress-Archive -Path 'dist/PlayX/*' -DestinationPath 'PlayX-Windows-x64-beta.zip' -Force
+          (Get-FileHash 'PlayX-Windows-x64-beta.zip' -Algorithm SHA256).Hash |
+            Out-File 'PlayX-Windows-x64-beta.sha256' -Encoding ascii
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PlayX-Windows-x64-beta-UNSIGNED
+          path: |
+            PlayX-Windows-x64-beta.zip
+            PlayX-Windows-x64-beta.sha256
+          retention-days: 14
