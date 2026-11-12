@@ -44,7 +44,7 @@ LLM output is constrained to validated style and bar choices. It never controls 
 
 - BPM, approximate musical key, beat/energy timeline extraction using librosa.
 - Five creative transition envelopes: smooth, bass swap, filter sweep, echo out, drop swap.
-- Deterministic render with beat-aligned cue choices, optional pitch-preserving tempo sync, peak safety normalization, metadata/plan JSON.
+- Deterministic render with beat-aligned cue choices, peak safety normalization, metadata/plan JSON.
 - FastAPI local studio with responsive dark UI.
 - Mixxx controller mapping and loopMIDI bridge for a live crossfade between **manually preloaded** decks.
 - Pytest coverage and GitHub Actions CI.
@@ -58,7 +58,7 @@ LLM output is constrained to validated style and bar choices. It never controls 
 
 Reference projects: [Mixxx](https://github.com/mixxxdj/mixxx) (GPL-2.0-or-later) and [DJ_SERENA](https://github.com/serenakeyitan/DJ_SERENA) (MIT). PlayX is an independently written implementation; neither project is bundled. Do not place copyrighted audio in this repository, and only render music you have rights to use.
 
-See [docs/MIXGXX.md](docs/MIXXX.md) for setup and caveats.
+See [docs/MIXXX.md](docs/MIXXX.md) for setup and caveats.
 
 ## License
 
